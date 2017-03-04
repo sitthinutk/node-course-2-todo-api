@@ -21,6 +21,16 @@ app.post('/todo', (req, res) => {
   })
 })
 
+app.get('/todo', (req, res) => {
+  Todo.find({}).then((todos) => {
+    res.status(200).send({todos});
+  }, (err) => {
+    res.status(500).send({
+      'errorMessage' : 'unable to get todos'
+    });
+  });
+})
+
 if(!module.parent) {
   app.listen(3000, () => {
     console.log('Started on port 3000')
