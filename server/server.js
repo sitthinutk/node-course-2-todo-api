@@ -1,3 +1,4 @@
+const {ObjectID} = require('mongodb');
 var express = require('express');
 var bodyParser = require('body-parser');
 
@@ -29,6 +30,24 @@ app.get('/todo', (req, res) => {
       'errorMessage' : 'unable to get todos'
     });
   });
+})
+
+// GET /todo/{id}
+app.get('/todo/:id', (req, res) => {
+  if (!ObjectID.isValid(req.params.id)) {
+    console.log(".........");
+    res.status(404).send({
+      'message' : 'ID is invalid'
+    });
+  }
+  Todo.findById(req.params.id).then((todo) => {
+    res.send(todo);
+  }, () => {
+    res.status(404).send({
+      'message' : 'todo object not found'
+    });
+  })
+
 })
 
 if(!module.parent) {
